@@ -5,7 +5,7 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Here is where I post things</title>
+  <title>Writing RSpec Tests for Dummies - Here is where I post things</title>
   <meta name="author" content="NegaMorgan">
 
   
@@ -18,7 +18,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://NegaMorgan.github.io">
+  <link rel="canonical" href="http://NegaMorgan.github.io/blog/2014/02/25/writing-rspec-tests-for-dummies">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <link href="/atom.xml" rel="alternate" title="Here is where I post things" type="application/atom+xml">
@@ -63,15 +63,12 @@
 </nav>
   <div id="main">
     <div id="content">
-      <div class="blog-index">
+      <div>
+<article class="hentry" role="article">
   
-  
-  
-    <article>
-      
   <header>
     
-      <h1 class="entry-title"><a href="/blog/2014/02/25/writing-rspec-tests-for-dummies/">Writing RSpec Tests for Dummies</a></h1>
+      <h1 class="entry-title">Writing RSpec Tests for Dummies</h1>
     
     
       <p class="meta">
@@ -94,7 +91,7 @@
   </header>
 
 
-  <div class="entry-content"><p>This week I struggled with conceptualizing and expressing useful tests in RSpec. After getting past the basic DSL of RSpec, <code>describe</code> and <code>it</code> blocks, I would find myself lost about how to express my expectations.</p>
+<div class="entry-content"><p>This week I struggled with conceptualizing and expressing useful tests in RSpec. After getting past the basic DSL of RSpec, <code>describe</code> and <code>it</code> blocks, I would find myself lost about how to express my expectations.</p>
 
 <p>My first instinct when I&rsquo;m struggling with a concept is to read all the material I can find online and do any tutorials I can get my hands on, but everything I found on RSpec referred to the deprecated &ldquo;should&rdquo; syntax. I didn&rsquo;t want to further confuse the issue in my head by reading materials that demonstrated a deprecated syntax. So I embarked on a trial-and-error process of building a simple class with some reasonably thorough tests.</p>
 
@@ -214,22 +211,16 @@ end
 
 <p>This was my favorite cheatsheet I found and is referenced throughout this article. <a href="https://www.anchor.com.au/wp-content/uploads/rspec_cheatsheet_attributed.pdf">https://www.anchor.com.au/wp-content/uploads/rspec_cheatsheet_attributed.pdf</a></p>
 </div>
-  
-  
 
 
-    </article>
-  
-  
-    <article>
+  <footer>
+    <p class="meta">
       
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2014/02/12/my-productivity-set-up-with-alfred/">My Productivity Set-Up With Alfred, Divvy and BetterTouchTool</a></h1>
-    
-    
-      <p class="meta">
-        
+  
+
+<span class="byline author vcard">Posted by <span class="fn">NegaMorgan</span></span>
+
+      
 
 
 
@@ -241,83 +232,32 @@ end
   
 
 
-<time datetime="2014-02-12T22:57:01-05:00" pubdate data-updated="true">Feb 12<span>th</span>, 2014</time>
-        
-      </p>
+<time datetime="2014-02-25T12:31:08-05:00" pubdate data-updated="true">Feb 25<span>th</span>, 2014</time>
+      
+
+
+    </p>
     
-  </header>
-
-
-  <div class="entry-content"><p>Recently, I worked with a <a href="https://twitter.com/snugug">cantankerous but brilliant web developer</a> who would always amaze me with how fast he did things on his computer. After several months of watching in awe, I demanded a full day productivity training, and he was kind enough to comply. These are the things I’ve learned and how I adapted them to better suit me.</p>
-
-<p>For productivity and speed, the rule of thumb is: mouse/cursor is slow, keyboard is fast.</p>
-
-<p>I tend to add that gestures are even faster. So, this is the set up I have to be super fast on my computer.</p>
-
-<h2>Alfred 2</h2>
-
-<p>The first thing my trainer introduced me to was <a href="http://www.alfredapp.com/">Alfred</a>. Much has been written about it, so I won&rsquo;t go into great detail, but I don’t think of Alfred as a launcher; Alfred is my interface, my meta-GUI. Using Alfred means I don’t have to know where anything is on my computer. <em>Anything</em>. I don’t need to know how to interact with different websites and services, I can teach it to Alfred one time (workflow it), and then interact only with Alfred in the manner I have defined. In that sense, I deliberately make myself as dumb as possible about the location and functionality of individual applications and files. I don’t want to store that information in my brain, I want to abstract it out and delegate that responsibility to Alfred.</p>
-
-<p>Before Alfred, I used OS X &ldquo;Spaces&rdquo; to group my open applications logically, then switched between the Spaces for different tasks. But, that meant an extra mental step of, &ldquo;I want iTunes &ndash;> where is iTunes? &ndash;> it’s a personal app, so I keep it in my 4th space&rdquo;. So in a sense, I&rsquo;ve forced myself to perform logic every time I want to retrieve iTunes. With Alfred, Instead I can abstract that out to, &ldquo;I want iTunes &ndash;> Alfred, give me iTunes,&rdquo; which is less taxing on my brain and allows me to focus on other things. Over time, this has become an even shorter mental step for me of, &ldquo;I want something&hellip;&rdquo;, because as soon as my brain has the realization that I want something to materialize on my computer, I know that Alfred will give it to me. When I&rsquo;m done with an application for the moment, I hide it <code>command + h</code> instead of switching spaces. I don&rsquo;t care where it is if I&rsquo;m not using it.</p>
-
-<p>Also, pro-tip, you can store your Alfred preferences in Dropbox so it automatically syncs to all your computers. This is great for keeping work/home settings sync&rsquo;d up.</p>
-
-<h2>Divvy</h2>
-
-<p><a href="https://mizage.com/divvy/">Divvy</a> is a window manager; it resizes your application windows to predefined shapes and locations. You can choose your own custom hotkeys to control Divvy, I prefer:</p>
-
-<p><code>ctrl + option + command + d</code></p>
-
-<p>This brings up the Divvy interface for me, and I can manage my settings. Divvy allows you to define your own window shapes, choose your own shortcut keys, and set whether the command is application specific or global to all apps.</p>
-
-<p>I want all my computer interactions to be stupid-simple, so I start all my Divvy commands with:</p>
-
-<p><code>ctrl + option + command</code></p>
-
-<p>The keys are right next to each other and it makes my commands unlikely to conflict with other applications. So, each Divvy command for me is my Divvy shortcut plus an option. I’m terrible with left and right, so I call left and right windows with my left and right arrow keys. Same for top and bottom. The rest are just letters I chose: <code>m</code> for middle, <code>c</code> for center, <code>f</code> for fullscreen, etc.</p>
-
-<p>I stole my hotkey schema from my trainer, but his window configurations were arranged more around responsive web design, which I imagine Divvy would be an excellent tool for.</p>
-
-<h2>BetterTouchTool</h2>
-
-<p><a href="http://www.boastr.net/">BetterTouchTool</a> is my dark horse candidate for favorite productivity app. The keyboard can be very fast, but there are some things that I do so often, that even punching two keys is taxing to my gentle sensibilities. I have become completely reliant on my BTT 3-finger-swipe system for managing my most used applications.</p>
-
-<p>BTT allows you to define exhaustive, custom, and very specific gestures on your trackpad. I don&rsquo;t do anything wildly complex with mine, really just four things I find key:</p>
-
-<p>3 finger swipe down = close a tab</p>
-
-<p>3 finger swipe up = open a tab</p>
-
-<p>3 finger swipe left/right = move to the right/left tab (natural scrolling style)</p>
-
-<p>3 finger double tap = hide an app</p>
-
-<p>Sounds simple, un-earth-shattering, but when I&rsquo;m in the midst of busy daily activities, the ability to close an unwanted window with such ease and simplicity is priceless to me. I use BTT heavily while interacting with Chrome, Sublime Text, and iTerm (my Terminal app). It makes it lightning fast to interact with tabs, even dare I say, fun. I don&rsquo;t mind pop-ups at all anymore, they&rsquo;re like whack-a-mole!</p>
-
-<p>With Chrome, you have <code>command + shift + t</code> to restore an accidentally closed tab. And with Sublime, you&rsquo;ll be prompted to save an unsaved file. With Terminal, on the other hand, it&rsquo;s a little bit dangerous to use 3 finger swipe down, but I maintain my sessions with tmux, so I don’t have to worry about losing my place in what I&rsquo;m working on.</p>
-
-<h2>Bonus: TextExpander</h2>
-
-<p><a href="http://smilesoftware.com/TextExpander/index.html">TextExpander</a> is great for things you have to type over and over again and don’t want to store in your brain. It’s like variables for everything on your computer. So, you set a variable (&ldquo;snippet&rdquo;) in your TextExpander preferences, and then any time you type that string in any GUI application, TextExpander will expand that text into the value of your snippet.</p>
-
-<p>The one catch is, you have to give the application access to everything you type on your computer.</p>
-
-<p>I don&rsquo;t use it all that much, but I know if I type ddate anywhere on my computer, it will expand to a formatted date for the current day. In fact, I had to disable it just to write this blog post. &ldquo;ddate&rdquo; is one of the default strings that is enabled for TextExpander.</p>
-
-<p>In my last job, I used TextExpander for storing employee numbers because I needed to refer to them frequently, but couldn&rsquo;t possibly remember them and didn&rsquo;t want to have to manually look them up every day. I can see it being useful for frequently used blocks of code in Sublime.</p>
+      <div class="sharing">
+  
+  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://NegaMorgan.github.io/blog/2014/02/25/writing-rspec-tests-for-dummies/" data-via="" data-counturl="http://NegaMorgan.github.io/blog/2014/02/25/writing-rspec-tests-for-dummies/" >Tweet</a>
+  
+  
+  
 </div>
-  
-  
 
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2014/02/12/my-productivity-set-up-with-alfred/" title="Previous Post: My Productivity Set-Up with Alfred, Divvy and BetterTouchTool">&laquo; My Productivity Set-Up with Alfred, Divvy and BetterTouchTool</a>
+      
+      
+    </p>
+  </footer>
+</article>
 
-    </article>
-  
-  <div class="pagination">
-    
-    <a href="/blog/archives">Blog Archives</a>
-    
-  </div>
 </div>
+
 <aside class="sidebar">
   
     <section>
@@ -341,6 +281,7 @@ end
 
   
 </aside>
+
 
     </div>
   </div>

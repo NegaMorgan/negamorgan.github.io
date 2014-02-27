@@ -4,7 +4,7 @@
   <title><![CDATA[Here is where I post things]]></title>
   <link href="http://NegaMorgan.github.io/atom.xml" rel="self"/>
   <link href="http://NegaMorgan.github.io/"/>
-  <updated>2014-02-12T23:12:41-05:00</updated>
+  <updated>2014-02-26T22:52:29-05:00</updated>
   <id>http://NegaMorgan.github.io/</id>
   <author>
     <name><![CDATA[NegaMorgan]]></name>
@@ -12,6 +12,133 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Writing RSpec Tests for Dummies]]></title>
+    <link href="http://NegaMorgan.github.io/blog/2014/02/25/writing-rspec-tests-for-dummies/"/>
+    <updated>2014-02-25T12:31:08-05:00</updated>
+    <id>http://NegaMorgan.github.io/blog/2014/02/25/writing-rspec-tests-for-dummies</id>
+    <content type="html"><![CDATA[<p>This week I struggled with conceptualizing and expressing useful tests in RSpec. After getting past the basic DSL of RSpec, <code>describe</code> and <code>it</code> blocks, I would find myself lost about how to express my expectations.</p>
+
+<p>My first instinct when I&rsquo;m struggling with a concept is to read all the material I can find online and do any tutorials I can get my hands on, but everything I found on RSpec referred to the deprecated &ldquo;should&rdquo; syntax. I didn&rsquo;t want to further confuse the issue in my head by reading materials that demonstrated a deprecated syntax. So I embarked on a trial-and-error process of building a simple class with some reasonably thorough tests.</p>
+
+<p>I found a few resources and tricks that helped me get a handle on the subject.</p>
+
+<h4>Tests are just expect() paired with a &ldquo;matcher&rdquo;</h4>
+
+<blockquote><p>Behaviour is asserted by pairing <code>expect().to</code> and <code>expect().not_to</code> with a Matcher predicate.</p></blockquote>
+
+<pre><code>expect(a_result).to eq("this value")
+expect(a_result).not_to eq("that value")
+</code></pre>
+
+<p>We have typically used the <code>eq()</code> method as a matcher, but it&rsquo;s useful to know the other slightly different equality measures.</p>
+
+<pre><code>eq(expected) # same value
+eql(expected) # same value and type
+equal(expected) # same exact object
+</code></pre>
+
+<p>Basic matchers cheatsheet: <a href="https://learn.thoughtbot.com/test-driven-rails-resources/matchers.pdf">https://learn.thoughtbot.com/test-driven-rails-resources/matchers.pdf</a></p>
+
+<p>More matchers in RSpec docs: <a href="http://rubydoc.info/gems/rspec-expectations/file/README.md#Built-in_matchers">http://rubydoc.info/gems/rspec-expectations/file/README.md#Built-in_matchers</a></p>
+
+<h4>Fun with RSpec</h4>
+
+<p>If I see another artist or movie spec, I might jump out a window, so I decided to build a really simple little model of something I enjoy, gin.</p>
+
+<pre><code>class Gin
+  attr_accessor :name, :style, :notes
+  GINS = []
+  def initialize
+    GINS &lt;&lt; self
+  end
+  def self.all
+    GINS
+  end
+  def self.reset_all
+    GINS.clear
+  end
+end
+</code></pre>
+
+<p>And now to the fun part, writing the tests.</p>
+
+<pre><code>  describe 'Gin Attributes' do
+
+    let(:tanqueray) { Gin.new }
+
+    it 'can have a name' do
+      tanqueray.name = "Tanqueray"
+      expect(tanqueray.name).to eq("Tanqueray")
+    end
+
+    it 'can have a style' do
+      tanqueray.style = "London Dry"
+      expect(tanqueray.style).to eq("London Dry")
+      expect(tanqueray.style).to match(/London Dry/)
+    end
+
+    it 'can have multiple notes of flavor' do
+      notes = ["angelica root","liquorice","juniper","coriander"]
+
+      tanqueray.notes = ["juniper","coriander","angelica root","liquorice"]
+      expect(tanqueray.notes.length).to eq(4)
+      expect(tanqueray.notes).to match_array(notes)
+      expect(tanqueray.notes).to have(4).notes
+    end
+
+  end
+</code></pre>
+
+<p><code>match()</code> is great for when you need a regex. I also found <code>match_array()</code> useful. I especially like the readability of <code>expect(tanqueray.notes).to have(4).notes</code>. The addition of <code>.notes</code> at the end is not required and is pure sugar.</p>
+
+<p>From there, I moved on to a new <code>describe</code> block to spec out my class methods. In addition to the standard <code>eq()</code>, I used a comparison operator, which is also supported.</p>
+
+<pre><code>  describe 'Gin class methods' do
+
+    before(:each) do
+      Gin.all.clear
+    end
+
+    it 'can list all Gins' do
+
+      hendricks = Gin.new
+      expect(Gin.all.length).to eq(1)
+
+      barr_hill = Gin.new
+      expect(Gin.all.count).to be &gt; 1
+    end
+
+    it 'can reset the list of Gins' do
+      gins = [Gin.new, Gin.new]
+      Gin.reset_all
+      expect(Gin.all.length).to eq(Gin.all.clear.length)
+    end
+
+  end
+</code></pre>
+
+<p>I didn&rsquo;t get as far as I had intended with these tests, so I hope to follow this up with a further exploration of test set up and tear down. I had a tough time getting that to work elegantly so think I still have much to learn there.</p>
+
+<h4>Satisfy and custom matchers</h4>
+
+<p>If the standard matchers don&rsquo;t work well for a given scenario, you can also use <code>satisfy</code> to get a little more manual with it, and RSpec also allows for <a href="http://rubydoc.info/gems/rspec-expectations/RSpec/Matchers">custom matchers</a> to be defined.</p>
+
+<blockquote><p>satisfy is valid for objects and blocks, and allows the target to be tested against an arbitrarily speciﬁed block of code.</p></blockquote>
+
+<pre><code>    it 'can have multiple notes of flavor' do
+      expect(tanqueray.notes).to satisfy {|n| n.count == 4}
+    end
+</code></pre>
+
+<h4>Other points I made note of along the way:</h4>
+
+<p>Add <code>--format documentation</code> to your .rspec file after you run <code>rspec --init</code>; this is helpful for the test writing process.</p>
+
+<p>This was my favorite cheatsheet I found and is referenced throughout this article. <a href="https://www.anchor.com.au/wp-content/uploads/rspec_cheatsheet_attributed.pdf">https://www.anchor.com.au/wp-content/uploads/rspec_cheatsheet_attributed.pdf</a></p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[My Productivity Set-Up With Alfred, Divvy and BetterTouchTool]]></title>
