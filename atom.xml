@@ -4,7 +4,7 @@
   <title><![CDATA[Here is where I post things]]></title>
   <link href="http://NegaMorgan.github.io/atom.xml" rel="self"/>
   <link href="http://NegaMorgan.github.io/"/>
-  <updated>2014-02-26T22:55:10-05:00</updated>
+  <updated>2014-03-12T21:21:45-04:00</updated>
   <id>http://NegaMorgan.github.io/</id>
   <author>
     <name><![CDATA[NegaMorgan]]></name>
@@ -12,6 +12,101 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Building a Responsive Image Search in an Hour With Sinatra]]></title>
+    <link href="http://NegaMorgan.github.io/blog/2014/03/12/building-a-responsive-image-search-in-an-hour-with-sinatra/"/>
+    <updated>2014-03-12T18:28:43-04:00</updated>
+    <id>http://NegaMorgan.github.io/blog/2014/03/12/building-a-responsive-image-search-in-an-hour-with-sinatra</id>
+    <content type="html"><![CDATA[<p>So I was gearing up to build something to work with APIs and practice Sinatra, but then I realized I was going to build a food app <em>again</em>. I decided I needed an influx of fresh ideas, so yesterday I asked my non-technical friend, Jackie, what I should build. She had two ideas, one of which sounded insanely difficult and the other sounded maybe easy enough to get done in time. Jackie is getting married this Spring and simply wanted a way to search for images, browse the results, and pin the ones that caught her eye to Pinterest, in effect building a wedding mood board.</p>
+
+<p>Sinatra makes setting up web apps pretty simple and image searching is a pretty standard request, so I decided to give it a go.</p>
+
+<h2>Finding a search solution</h2>
+
+<p>First I checked out the Google Search API. It was a bit confusing and I wasn&rsquo;t completely sure what features were available for web search vs custom site search or which features were free and which required a paid account. So, I turned to the comforting world of Ruby Gems and looked for a good wrapper. I found one called Google Search (aptly) that hadn&rsquo;t been updated in a couple years, but I didn&rsquo;t see any other options, so I gave it a try.</p>
+
+<pre><code>require 'google-search'
+g = Google::Search::Image.new
+</code></pre>
+
+<p>The gem didn&rsquo;t have too much documentation, so I played with it in irb a bit, and it seemed pretty straightforward. After requiring the gem and instantiating the class, I got an object I could try different methods on.</p>
+
+<pre><code>#=&gt; &lt;Google::Search::Image:0x00000102153990 @color=nil, @image_size=nil, @image_type=nil, @file_type=nil, @safety_level=nil, @type=:image, @version=1.0, @offset=0, @size=:large, @language=:en, @query=nil, @api_key=:notsupplied, @options={}&gt;
+</code></pre>
+
+<p>Seeing that there was a query attribute, I figured I could shove something in there:</p>
+
+<pre><code>g.query = "kittens"
+</code></pre>
+
+<p>And running <code>g.methods</code> let me know that my object behaves like an enumerable.</p>
+
+<pre><code>g.each { |i| puts i.uri } #=&gt; so many kittens, you have no idea
+</code></pre>
+
+<p>At this point, I felt comfortable that the google-search gem would at least meet my basic needs for image search functionality. Time to build!</p>
+
+<h2>Setting up Sinatra</h2>
+
+<p>I put together a basic Sinatra scaffolding, set up bundler and rspec. Once I get that running, I start thinking about my endpoints and how the search will work. I set up some routes and make sure the urls are working as expected when I rackup.</p>
+
+<pre><code>module JackieImageSearch
+  class App &lt; Sinatra::Base
+
+    get '/' do
+
+      erb :"index.html"
+    end
+
+    get '/search' do
+      @term = params[:query]
+
+      @search_results = Google::Search::Image.new
+      @search_results.query = @term
+
+      erb :"show_results.html"
+    end
+
+  end
+end
+</code></pre>
+
+<p>Once the urls are set up, it takes me a few minutes of fiddling with it to get the controller and form working together properly.</p>
+
+<pre><code>&lt;form action="/search" method="get"&gt;
+  &lt;label for="query"&gt;Search&lt;/label&gt;
+  &lt;input type="text" id="query" name="query" /&gt;
+  &lt;input type="submit" value="search"&gt;
+&lt;/form&gt;
+</code></pre>
+
+<p>Once I have my get request actually passing it&rsquo;s params to my results page, I&rsquo;m ready to build out the view and my logic for displaying the results. I start with a simple list of image URLs, then after I confirm that is working, I built out the actual image tags as list items. And at this point, I realize I&rsquo;m basically done! How awesome is it that you can build a working search in 45 minutes using open source tools?</p>
+
+<h2>Making it pretty</h2>
+
+<p>So, now I need to see if I can make it pretty. Or at least prettier. A long list of giant images is not so pleasant to scroll through. My initial thought is to just style the images to scale down to some reasonable size and display them in simple fixed-height/width rows. But I really hate the idea of a fixed width for this site, so I do a Google search for &ldquo;responsive image grid&rdquo; with pretty low expectations. I find a pure CSS solution that looks simple enough, copy/paste and adapt my erb to give it a try.</p>
+
+<pre><code>&lt;section id="photos"&gt;
+&lt;% @search_results.each do |result| %&gt;
+    &lt;img src="&lt;%= result.uri %&gt;" /&gt;
+&lt;% end %&gt;
+&lt;/section&gt;
+</code></pre>
+
+<p>To my surprise, it works right away.</p>
+
+<p><img src="http://NegaMorgan.github.io/images/vases.png" alt="Results for green vase" /></p>
+
+<p>Seamless Responsive Image Grid: <a href="http://css-tricks.com/seamless-responsive-photo-grid/">http://css-tricks.com/seamless-responsive-photo-grid/</a></p>
+
+<p>Adding the Pin buttons I knew would be fairly trivial because social apps like Pinterest always provide little JavaScript buttons for site admins to embed. I visit the Pinterest developer portal and snatch the &ldquo;appear on hover&rdquo; button. It only requires including a JS file, so I do so and test out the functionality. It works with the exception of denying my &ldquo;localhost&rdquo; source location.</p>
+
+<p>So, could I improve the code? Yes. Could it use more style? Absolutely. But I&rsquo;m pretty pleased that we live in a world where tools are readily available to build a working search with a remarkably Pinterest-like interface in <em>under an hour</em>.</p>
+
+<p>Check it out on GitHub: <a href="https://github.com/NegaMorgan/jackie-image-search">https://github.com/NegaMorgan/jackie-image-search</a></p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Writing RSpec Tests for Dummies]]></title>
