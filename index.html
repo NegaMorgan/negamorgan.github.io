@@ -9,7 +9,7 @@
   <meta name="author" content="NegaMorgan">
 
   
-  <meta name="description" content="So I was gearing up to build something to work with APIs and practice Sinatra, but then I realized I was going to build a food app again. I decided I &hellip;">
+  <meta name="description" content="I set out to learn about front-end architecture with grid systems because I haven&rsquo;t done hands-on work with a grid system before, but quickly &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -65,6 +65,281 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/03/21/sass-for-beginners/">Sass for Beginners</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-03-21T12:29:07-04:00" pubdate data-updated="true">Mar 21<span>st</span>, 2014</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>I set out to learn about front-end architecture with grid systems because I haven&rsquo;t done hands-on work with a grid system before, but quickly it became clear that I needed to learn some Sass fundamentals. Here&rsquo;s a walkthrough of the features I learned about and my tips for folks at the same stage of learning.</p>
+
+<p>First of all, for shame that my life has been Sass-less. I know many Sass developers and even attended the inaugural SassConf last year, so I have no excuse for not having used it on a personal project before. As a former full-time CSS writer, Sass always looked weird and confusing to me. I could grasp the use of variables, but pretty much everything else just seemed really complicated.</p>
+
+<p>I started with the Team Treehouse Sass Basics course. It moves at a fairly slow pace, but is taught by the creator of Sass Hampton Catlin who is fairly goofy in his presentation style, so it&rsquo;s fun to watch. The super-simplified explanations helped me understand and internalize how Sass differs from CSS. Instantly, I could see how Sass makes CSS more Ruby-like, something I&rsquo;m quite comfortable with on day thirty-something of my Ruby course.</p>
+
+<blockquote><p>Sass makes CSS more Ruby-like</p></blockquote>
+
+<p>After I became comfortable with the basic syntax of Sass, I gave up the Treehouse videos in favor of a great beginner slide deck that allowed me to work at my own pace: <a href="https://speakerdeck.com/anotheruiguy/sass-101-a-newbs-guide">https://speakerdeck.com/anotheruiguy/sass-101-a-newbs-guide</a></p>
+
+<h3>Working with Sass</h3>
+
+<p>If you&rsquo;re not in a Rails app that already has Sass, assuming you have Ruby installed, you can <code>gem install sass</code>. Then all you need to start working with Sass is a <code>something.scss</code> file. Run <code>sass --watch .</code> to have Sass watch your current directory and automatically compile <code>something.css</code> every time you save <code>something.scss</code></p>
+
+<p>Alternately, if you just want to see how the language works, you can try out the examples in <a href="http://sassmeister.com/">Sassmeister</a></p>
+
+<p>An important thing to know about working with Sass is that you don&rsquo;t have to use any of it&rsquo;s features if you don&rsquo;t want. You can write plain old CSS in your Sass file and it will render fine, so you can really use the level of Sass you&rsquo;re comfortable with and grow to the more advanced features gradually.</p>
+
+<h3>Nesting and Variables</h3>
+
+<p>One of the major banes of CSS is having to repeat yourself over and over again, and Hampton tells us in the Treehouse videos that the first and primary goal of Sass is not having to repeat yourself as much. Two of the simplest tools for this are nesting and variables.</p>
+
+<p>When Sass compiles, it automatically writes the repetitive CSS selectors based on the nesting present in your Sass file. The <code>&amp;</code> signifies a direct parent relationship. So, for example:</p>
+
+<p><strong>Sass:</strong></p>
+
+<pre><code>.content .blog-entry {
+    margin: 20px 0;
+    p {
+      color: gray;
+      line-height: 1.2em;
+    }
+    a {
+      color: blue;
+      &amp;:hover {
+        text-decoration: underline;
+      }
+    }
+}
+</code></pre>
+
+<p><strong>Compiled CSS:</strong></p>
+
+<pre><code>.content .blog-entry {
+  margin: 20px 0; 
+}
+  .content .blog-entry p {
+    color: gray;
+    line-height: 1.2em; 
+  }
+  .content .blog-entry a {
+    color: blue; 
+  }
+    .content .blog-entry a:hover {
+      text-decoration: underline; 
+    }
+</code></pre>
+
+<p>Not massively different, but you can see how on a real project with a large amount of style, this can save you considerable repetition. It also makes updating class names simple.</p>
+
+<p>Variables can be defined with the <code>$</code> operator to further DRY out your CSS.</p>
+
+<p><strong>Sass:</strong></p>
+
+<pre><code>$full-screen: 900px;
+$small-screen: 320px;
+
+.content {
+  width: $full-screen;
+  @media only screen and (max-width: $small-screen) {
+    width: 97%;
+  }
+}
+</code></pre>
+
+<p><strong>Compiled CSS:</strong></p>
+
+<pre><code>.content {
+  width: 900px; 
+}
+  @media only screen and (max-width: 320px) {
+    .content {
+      width: 97%; 
+    } 
+  }
+</code></pre>
+
+<h3>Extends</h3>
+
+<p>Extends allow you to add a selector to a previously defined block of code.</p>
+
+<p><strong>Sass:</strong></p>
+
+<pre><code>.blog .entry {
+  h1 {
+    color: black;
+    font: {
+      size: 2em;
+      weight: bold;
+      variant: small-caps;
+    }
+  }
+  h2 {
+    font-size: 1.5em;
+    @extend h1
+  }
+}
+</code></pre>
+
+<p><strong>CSS:</strong></p>
+
+<pre><code>.blog .entry h1, .blog .entry h2 {
+  color: black;
+  font-size: 2em;
+  font-weight: bold;
+  font-variant: small-caps; 
+}
+.blog .entry h2 {
+  font-size: 1.5em; 
+}
+</code></pre>
+
+<p>You can also use <code>%</code> to denote &ldquo;silent extends&rdquo; for reusable code blocks.</p>
+
+<p><strong>Sass:</strong></p>
+
+<pre><code>%marquee-text {
+  font: {
+    size: 3em;
+    family: Merriweather;
+  }
+}
+.content-marquee {
+  color: gray;
+  @extend %marquee-text;
+}
+.media-marquee {
+  color: purple;
+  @extend %marquee-text;
+}
+</code></pre>
+
+<p><strong>Compiled CSS:</strong></p>
+
+<pre><code>.content-marquee, .media-marquee {
+  font-size: 3em;
+  font-family: Merriweather; 
+}
+
+.content-marquee {
+  color: gray; 
+}
+
+.media-marquee {
+  color: purple; 
+}
+</code></pre>
+
+<p>At this point, I&rsquo;m not sure why silent extends exist, given mixins, but I&rsquo;m just learning so I&rsquo;ll give it some time to sink in.</p>
+
+<h3>Mixins</h3>
+
+<p>Mixins allow you to use the same block of style in various places throughout your code. The <code>@mixin</code> keyword is used to define a mixin block. If you pretend <code>@mixin</code> is <code>def</code> it all feels comfortably like a Ruby method!</p>
+
+<pre><code>@mixin border($radius, $style) {
+  -moz-border-radius: $radius;
+  -webkit-border-radius: $radius;
+  border-radius: $radius;
+  border: $style;
+}
+
+.blog .entry {
+  @include border(5px, 3px solid white);
+}
+</code></pre>
+
+<p>Mixins also support string interpolation(!)</p>
+
+<p><strong>Sass:</strong></p>
+
+<pre><code>@mixin standard-border($side) {
+    border-#{$side}: solid 1px gray;
+}
+.header {
+    @include standard-border("top");
+}
+</code></pre>
+
+<p><strong>CSS:</strong></p>
+
+<pre><code>.header {
+  border-top: solid 1px gray; 
+}
+</code></pre>
+
+<p>The thing that blew my mind the most (so far) is that Sass has an <code>@each</code> keyword that allows you to iterate in your stylesheet. Sass is seriously a dream come true for a CSS-er turned Ruby-ist.</p>
+
+<blockquote><p>Sass has an <code>@each</code> keyword that allows you to iterate in your stylesheet</p></blockquote>
+
+<p><strong>Sass</strong></p>
+
+<pre><code>@each $profile in github, twitter, linkedin {
+  .#{$profile}-icon {
+    width: 50px;
+    height: 50px;
+    background-image: url('/images/#{$profile}.png')
+  }
+}
+</code></pre>
+
+<p><strong>CSS:</strong></p>
+
+<pre><code>.github-icon {
+  width: 50px;
+  height: 50px;
+  background-image: url("/images/github.png"); 
+}
+
+.twitter-icon {
+  width: 50px;
+  height: 50px;
+  background-image: url("/images/twitter.png"); 
+}
+
+.linkedin-icon {
+  width: 50px;
+  height: 50px;
+  background-image: url("/images/linkedin.png"); 
+}
+</code></pre>
+
+<p>Now that I know some basics of Sass, I&rsquo;m ready to tackle the grid systems I set out to explore. Stay tuned!</p>
+
+<p><strong>Sass references/resources:</strong></p>
+
+<p><a href="https://speakerdeck.com/anotheruiguy/sass-101-a-newbs-guide">Sass 101 speaker deck</a> &ndash; Dale Sande</p>
+
+<p><a href="http://sassmeister.com/">Sassmeister</a></p>
+
+<p><a href="http://teamtreehouse.com/library/sass-basics/">Sass Basics</a> &ndash; Team Treehouse, Hampton Catlin</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -445,6 +720,10 @@ end
     <section>
   <h1>Recent Posts</h1>
   <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2014/03/21/sass-for-beginners/">Sass for Beginners</a>
+      </li>
     
       <li class="post">
         <a href="/blog/2014/03/12/building-a-responsive-image-search-in-an-hour-with-sinatra/">Building a Responsive Image Search in an Hour With Sinatra</a>
